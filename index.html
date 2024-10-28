@@ -78,7 +78,7 @@
             <div class="row">
                 <label for="" class="col-3">Mã học viên</label>
                 <div class="col-6">
-                    <input type="text" id="id" class="form-control" placeholder="123456789">
+                    <input type="text" id="id" class="form-control" placeholder="03-123456789">
                 </div>
                 <span id="er-id" class="col-3">*</span>
             </div>
@@ -223,12 +223,12 @@
         var erName = document.getElementById("er-name");
         var erEmail = document.getElementById("er-email");
 
-        var regId = /^[0-9]{9}$/;
+        var regId = /^[0-9]{2}-[0-9]{9}$/;
         var regName = /(^[A-Z]{1}[a-z]+)(\s[A-Z]{1}[a-z]*)+$/;
         var regEmail = /^[\w-\.]+@iuh.edu.vn/g;
 
         if (id === "" || name === "" || email === "" || !(regId).test(id) || !(regName).test(name) || !(regEmail).test(email)) {
-            alert("Hãy nhâpk đầy đủ thông tin hoặc kiểm tra lại thông tin nhập!!!");
+            alert("Hãy nhập đầy đủ thông tin hoặc kiểm tra lại thông tin nhập!!!");
             if (id === "")
                 erId.innerText = "Hãy nhập mã !!";
             else if (!(regId).test(id))

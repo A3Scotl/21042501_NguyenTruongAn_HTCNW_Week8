@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
+    <script  src="./js/bootstrap.min.js"></script>
+    <script src="./js/jquery-3.7.1.min.js"></script>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        span{
+            color: red;
+        }
+        li{
+            cursor: pointer;
+        }
+        .btn{
+            color: white;
+            font-weight: bold;
+            padding: 5px;
+        }
+        #modal{
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%,-50%);
+            background-color: white;
+            height: fit-content;
+        }
+        table{
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1 class="text-center bg-info">
+        DANH SACH LUONG NHAN VIEN
+    </h1>
+    <ul class="nav">
+        <li class="nav-item nav-link"> Trang chủ
+
+        </li>
+        <li class="nav-item nav-link">
+            Thông tin
+        </li>
+        <li class="nav-item nav-link" id="open">
+            Cập nhập lương
+        </li>
+        
+    </ul>
+    <table id="table" class="table table-bordered table-active">
+<thead>
+    <tr>
+        <td>STT</td>
+        <td>Mã nhân sự</td>
+        <td>Họ tên</td>
+        <td>Ngày hợp đồng</td>
+        <td>Chức vụ</td>
+        <td>Bậc lương</td>
+    </tr>
+</thead>
+    </table>
+    <div class="modal w-50 shadow-lg p-3" id="modal">
+        <div class="modal-header">
+            <div class="modal-title">
+THÔNG TIN NHÂN VIÊN
+            </div>
+            <div class="btn btn-close" id="close"></div>
+        </div>
+        <div class="d-flex flex-column" style="row-gap: 10px;">
+            <div class="form-group">
+                <label for="">Mã nhân viên</label>
+                <input id="id" type="text" class="form-control" placeholder="Mã nhân sự">
+                <span id="er-id">(*)</span>
+            </div>
+            <div class="form-group">
+                <label for="">Tên nhân viên</label>
+                <input id="name" type="text" class="form-control" placeholder="Họ tên">
+                <span id="er-name">(*)</span>
+            </div>
+            <div class="form-group">
+                <label for="">Ngày vào công ty</label>
+                <input id="date" type="date" class="form-control">
+                <span id="er-date">(*)</span>
+            </div>
+            <div class="form-group">
+                <label for="">Chức vụ</label>
+                <div class="form-group">
+                    <input type="radio" id="cv1" name="cv" value="Cán bộ quản lý"> Cán bộ quản lý
+                    <input type="radio" id="cv2" name="cv" value="Nhân viên"> Nhân viên
+                </div>
+                <span id="er-cv">(*)</span>
+            </div>
+            <div class="form-group">
+                <label for="">Bậc lương</label>
+              <select name="" id="bluong" class="form-select">
+                <option value="1">Bậc 1</option>
+                <option value="2">Bậc 2</option>
+               
+              </select>
+              
+            </div>
+            <div class="form-group">
+                <label for="">Hệ số</label>
+                <input id="hso" value="1.45"  type="text" class="form-control" readonly>
+            </div>
+            <button class="btn btn-info col-3" id="submit">
+                Thêm
+            </button>
+        </div>
+        <div class="modal-footer">
+            <button id="close1"class="btn btn-info">Close</button>
+        </div>
+    </div>
+    <footer class="text-center">
+      Nguyễn Trường An - 21042501
+    </footer>
+</body>
+<script>
+    var open = document.getElementById("open");
+    var close = document.getElementById("close");
+    var close1 = document.getElementById("close1");
+    var modal = document.getElementById("modal");
+    open.addEventListener("click",function(){
+        modal.style.display = "block";
+    })
+    close.addEventListener("click",function(){
+        modal.style.display = "none";
+    })
+    close1.addEventListener("click",function(){
+        modal.style.display = "none";
+    })  
+    var hso =document.getElementById("hso");
+    var bluong= document.getElementById("bluong")
+    bluong.addEventListener("change",function(){
+        let heso = 0;
+        switch(bluong.value)
+            {
+                case "1":
+                        heso = 1.45;
+                    break;
+                case "2":
+                        heso = 1.68;
+                    break;
+
+            }
+            hso.value = heso;
+    });
+  
+    var submit = document.getElementById("submit");
+    var table = document.getElementById("table");
+    var stt =0;
+    submit.addEventListener("click",function(){
+        var id =  document.getElementById("id").value;
+        var name =document.getElementById("name").value;
+        var date =document.getElementById("date").value;
+        var cv1 = document.getElementById("cv1");
+        var cv2 = document.getElementById("cv2");
+        var cv = cv1.checked? "Cán bộ quản lý" : "Nhân viên";
+        var erId = document.getElementById("er-id");
+        var regId = /^[0-9]{9}$/;
+        var regName = /^([A-Z]{1}[a-z]+)(\s[A-Z]{1}[a-z]*)+$/
+        var erName = document.getElementById("er-name");
+        const ktra = new Date();
+        const ngayHienTai = new Date(date);
+        ktra.setFullYear(ktra.getFullYear() - 18);
+      
+        var erDate = document.getElementById("er-date");
+        var erCv = document.getElementById("er-cv");
+   
+        if(id===""||name===""||date===""||(!cv1.checked&&!cv2.checked)){
+            alert("Vui lòng nhập đầy đủ thông tin hoặc kiểm tra lại thông tin nhập!!");
+            if(id =="")
+                erId.innerText = "Mã không được rỗng!"
+            else if(!regId.test(id))
+                erId.innerText = "Mã sai định dạng! (xxxxxxxxx)"
+            else 
+            erId.innerText = "";
+            if(name =="")
+                erName.innerText = "Tên không được rỗng!"
+            else if(!regName.test(name))
+                erName.innerText = "Tên sai định dạng!"
+            else 
+                erName.innerText = "";
+                if(date.value =="")
+                erDate.innerText = "Ngày không được rỗng!"
+            else if(ngayHienTai > ktra)
+                erDate.innerText = "Ngày không hợp lệ!"
+            else 
+                erDate.innerText = "";
+            if(!cv1.checked&&!cv2.checked)
+                erCv.innerText = "Hãy chọn chức vụ!";
+            else 
+                erCv.innerText = "";
+
+        }
+
+        else{
+            stt++;
+            let html = `
+            <tr>
+        <td>${stt}</td>
+        <td>${id}</td>
+        <td>${name}</td>
+        <td>${date}</td>
+        <td>${cv}</td>
+        <td>${hso.value}</td>
+    </tr>
+            `;
+            let row = table.insertRow();
+            row.innerHTML = html;
+            modal.style.display = "none";
+            resetForm();
+        }
+
+    })
+    function resetForm (){
+        document.getElementById("id").value = "";
+document.getElementById("name").value = "";
+document.getElementById("date").value = "";
+document.getElementById("hso").value = "";
+document.getElementById("cv1").checked = false;
+document.getElementById("cv2").checked = false;
+    }
+</script>
+</html>
